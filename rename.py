@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your files
-folder = "passport/images"
+folder = "mortgage-statement/images"
 
 count = 0  # counter for renamed files
 
