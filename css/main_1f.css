@@ -9419,6 +9419,9 @@ editor img {
     display: block;
     height: 10px
 }
+.navbar{
+    flex-wrap: wrap;
+}
 
 @media(max-width:575px) {
     .mastfoot-rings i {
@@ -9432,7 +9435,9 @@ editor img {
         max-width: 1440px;
         margin: auto;
         display: flex;
-        justify-content: flex-end
+        justify-content: flex-end;
+     flex-wrap: wrap;
+
     }
 
     .navbar-link {
