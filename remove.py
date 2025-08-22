@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your images
-folder = r"driving-license-photolook\images"
+folder = r"business-utility-bill\images"
 
 # Allowed image extensions
 image_exts = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff"]
@@ -20,7 +20,7 @@ for filename in os.listdir(folder):
         continue
 
     # Remove "scr" from name
-    new_name = name.replace(" FRONT", "")
+    new_name = name.replace(" SCR", "")
     new_filename = f"{new_name}{ext}"
     new_path = os.path.join(folder, new_filename)
 

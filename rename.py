@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your files
-folder = "driving-license-photolook\images"
+folder = "certificate\images"
 
 count = 0  # counter for renamed files
 
