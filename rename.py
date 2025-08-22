@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your files
-folder = "mortgage-statement/images"
+folder = "driving-license-photolook\images"
 
 count = 0  # counter for renamed files
 
