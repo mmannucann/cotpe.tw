@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your files
-folder = "certificate\images"
+folder = "credit-card\images"
 
 count = 0  # counter for renamed files
 
