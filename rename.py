@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your files
-folder = "credit-card\images"
+folder = "residence-permit\images"
 
 count = 0  # counter for renamed files
 
