@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your images
-folder = r"residence-permit-photolook\images"
+folder = r"credit-card-photolook\images"
 
 # Allowed image extensions
 image_exts = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff"]

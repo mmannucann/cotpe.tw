@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your files
-folder = "reference\images"
+folder = "credit-card-photolook\images"
 
 count = 0  # counter for renamed files
 
