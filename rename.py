@@ -1,7 +1,7 @@
 import os
 
 # Folder containing your files
-folder = "residence-permit\images"
+folder = "reference\images"
 
 count = 0  # counter for renamed files
 
