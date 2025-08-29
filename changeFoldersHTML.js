@@ -57,17 +57,17 @@ const headerReplacement = `
                             Members</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../utility-bill.html"> <span class="navbar-link-txt">Utility
                             bill</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../business-utility-bill.html"> <span class="navbar-link-txt">Business utility bill</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
+                <div class="navbar-item "> <a class="navbar-link" href="../business-utility-bill.html"> <span class="navbar-link-txt">Business utility bill</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../bank-statement.html"> <span class="navbar-link-txt">Bank
                             statement</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item active"> <a class="navbar-link" href="../business-bank-statement.html"> <span class="navbar-link-txt">Business bank statement</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
+                <div class="navbar-item "> <a class="navbar-link" href="../business-bank-statement.html"> <span class="navbar-link-txt">Business bank statement</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../mortgage-statement.html"> <span class="navbar-link-txt">Mortgage statement</span> <span class="navbar-link-underline bg-primary"></span>
                     </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../passport.html"> <span class="navbar-link-txt">Passport</span>
                         <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../passport-photolook.html"> <span class="navbar-link-txt">Passport photolook</span> <span class="navbar-link-underline bg-primary"></span>
                     </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../driving-license.html"> <span class="navbar-link-txt">Driving
+                <div class="navbar-item active"> <a class="navbar-link" href="../driving-license.html"> <span class="navbar-link-txt">Driving
                             license</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../driving-license-photolook.html"> <span class="navbar-link-txt">Driving license photolook</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../ID-card.html"> <span class="navbar-link-txt">ID
@@ -79,7 +79,7 @@ const headerReplacement = `
                 </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../travel-visa.html"> <span class="navbar-link-txt">Travel
                             visa</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../credit-card.html"> <span class="navbar-link-txt">Credit
+                <div class="navbar-item "> <a class="navbar-link" href="../credit-card.html"> <span class="navbar-link-txt">Credit
                             card</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../mix.html"> <span class="navbar-link-txt">Mix</span> <span class="navbar-link-underline bg-primary"></span>
                     </a> </div>
@@ -92,9 +92,9 @@ const headerReplacement = `
                         <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../paystub.html"> <span class="navbar-link-txt">Paystub</span>
                         <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../business-registration-certificate.html"> <span class="navbar-link-txt">Business registration certificate</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../credit-card-photolook.html"> <span class="navbar-link-txt">Credit card photolook</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../car-title.html"> <span class="navbar-link-txt">Car
+                <div class="navbar-item "> <a class="navbar-link" href="../business-registration-certificate.html"> <span class="navbar-link-txt">Business registration certificate</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
+                <div class="navbar-item "> <a class="navbar-link" href="../credit-card-photolook.html"> <span class="navbar-link-txt">Credit card photolook</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
+                <div class="navbar-item "> <a class="navbar-link" href="../car-title.html"> <span class="navbar-link-txt">Car
                             title</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../health-insurance-card.html"> <span class="navbar-link-txt">Health insurance card</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../ssn.html"> <span class="navbar-link-txt">SSN</span> <span class="navbar-link-underline bg-primary"></span>
