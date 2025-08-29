@@ -55,10 +55,10 @@ const headerReplacement = `
                         <span class="navbar-link-underline bg-red"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../credits.html"> <span class="navbar-link-txt">All
                             Members</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item active"> <a class="navbar-link" href="../utility-bill.html"> <span class="navbar-link-txt">Utility
+                <div class="navbar-item "> <a class="navbar-link" href="../utility-bill.html"> <span class="navbar-link-txt">Utility
                             bill</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item "> <a class="navbar-link" href="../business-utility-bill.html"> <span class="navbar-link-txt">Business utility bill</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../bank-statement.html"> <span class="navbar-link-txt">Bank
+                <div class="navbar-item active"> <a class="navbar-link" href="../bank-statement.html"> <span class="navbar-link-txt">Bank
                             statement</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item "> <a class="navbar-link" href="../business-bank-statement.html"> <span class="navbar-link-txt">Business bank statement</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item "> <a class="navbar-link" href="../mortgage-statement.html"> <span class="navbar-link-txt">Mortgage statement</span> <span class="navbar-link-underline bg-primary"></span>
