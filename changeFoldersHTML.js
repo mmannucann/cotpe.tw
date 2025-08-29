@@ -55,7 +55,7 @@ const headerReplacement = `
                         <span class="navbar-link-underline bg-red"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../credits.html"> <span class="navbar-link-txt">All
                             Members</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
-                <div class="navbar-item"> <a class="navbar-link" href="../utility-bill.html"> <span class="navbar-link-txt">Utility
+                <div class="navbar-item active"> <a class="navbar-link" href="../utility-bill.html"> <span class="navbar-link-txt">Utility
                             bill</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item "> <a class="navbar-link" href="../business-utility-bill.html"> <span class="navbar-link-txt">Business utility bill</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../bank-statement.html"> <span class="navbar-link-txt">Bank
@@ -77,7 +77,7 @@ const headerReplacement = `
                             card photolook</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item"> <a class="navbar-link" href="../certificate.html"> <span class="navbar-link-txt">Certificate</span> <span class="navbar-link-underline bg-primary"></span> </a>
                 </div>
-                <div class="navbar-item active"> <a class="navbar-link" href="../travel-visa.html"> <span class="navbar-link-txt">Travel
+                <div class="navbar-item "> <a class="navbar-link" href="../travel-visa.html"> <span class="navbar-link-txt">Travel
                             visa</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
                 <div class="navbar-item "> <a class="navbar-link" href="../credit-card.html"> <span class="navbar-link-txt">Credit
                             card</span> <span class="navbar-link-underline bg-primary"></span> </a> </div>
