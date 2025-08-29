@@ -1,0 +1,1308 @@
+! function(t, u) {
+    var o, e = t.jQuery || t.Cowboy || (t.Cowboy = {});
+    e.throttle = o = function(i, a, r, s) {
+        var l, c = 0;
+
+        function t() {
+            var t = this,
+                e = +new Date - c,
+                n = arguments;
+
+            function o() {
+                c = +new Date, r.apply(t, n)
+            }
+            s && !l && o(), l && clearTimeout(l), s === u && i < e ? o() : !0 !== a && (l = setTimeout(s ? function() {
+                l = u
+            } : o, s === u ? i - e : i))
+        }
+        return "boolean" != typeof a && (s = r, r = a, a = u), e.guid && (t.guid = r.guid = r.guid || e.guid++), t
+    }, e.debounce = function(t, e, n) {
+        return n === u ? o(t, e, !1) : o(t, n, !1 !== e)
+    }
+}(this),
+function() {
+    "use strict";
+    var m, n, g, v;
+
+    function a(t) {
+        try {
+            return t.defaultView && t.defaultView.frameElement || null
+        } catch (t) {
+            return null
+        }
+    }
+
+    function c(t) {
+        this.time = t.time, this.target = t.target, this.rootBounds = o(t.rootBounds), this.boundingClientRect = o(t.boundingClientRect), this.intersectionRect = o(t.intersectionRect || {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: 0,
+            height: 0
+        }), this.isIntersecting = !!t.intersectionRect;
+        var t = this.boundingClientRect,
+            t = t.width * t.height,
+            e = this.intersectionRect,
+            e = e.width * e.height;
+        this.intersectionRatio = t ? Number((e / t).toFixed(4)) : this.isIntersecting ? 1 : 0
+    }
+
+    function t(t, e) {
+        var n, o, i, e = e || {};
+        if ("function" != typeof t) throw new Error("callback must be a function");
+        if (e.root && 1 != e.root.nodeType && 9 != e.root.nodeType) throw new Error("root must be a Document or Element");
+        this._checkForIntersections = (n = this._checkForIntersections.bind(this), o = this.THROTTLE_TIMEOUT, i = null, function() {
+            i = i || setTimeout(function() {
+                n(), i = null
+            }, o)
+        }), this._callback = t, this._observationTargets = [], this._queuedEntries = [], this._rootMarginValues = this._parseRootMargin(e.rootMargin), this.thresholds = this._initThresholds(e.threshold), this.root = e.root || null, this.rootMargin = this._rootMarginValues.map(function(t) {
+            return t.value + t.unit
+        }).join(" "), this._monitoringDocuments = [], this._monitoringUnsubscribes = []
+    }
+
+    function r(t, e, n, o) {
+        "function" == typeof t.addEventListener ? t.addEventListener(e, n, o || !1) : "function" == typeof t.attachEvent && t.attachEvent("on" + e, n)
+    }
+
+    function s(t, e, n, o) {
+        "function" == typeof t.removeEventListener ? t.removeEventListener(e, n, o || !1) : "function" == typeof t.detatchEvent && t.detatchEvent("on" + e, n)
+    }
+
+    function b(t) {
+        var e;
+        try {
+            e = t.getBoundingClientRect()
+        } catch (t) {}
+        return e ? e = e.width && e.height ? e : {
+            top: e.top,
+            right: e.right,
+            bottom: e.bottom,
+            left: e.left,
+            width: e.right - e.left,
+            height: e.bottom - e.top
+        } : {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: 0,
+            height: 0
+        }
+    }
+
+    function o(t) {
+        return !t || "x" in t ? t : {
+            top: t.top,
+            y: t.top,
+            bottom: t.bottom,
+            left: t.left,
+            x: t.left,
+            right: t.right,
+            width: t.width,
+            height: t.height
+        }
+    }
+
+    function w(t, e) {
+        var n = e.top - t.top,
+            t = e.left - t.left;
+        return {
+            top: n,
+            left: t,
+            height: e.height,
+            width: e.width,
+            bottom: n + e.height,
+            right: t + e.width
+        }
+    }
+
+    function i(t, e) {
+        for (var n = e; n;) {
+            if (n == t) return !0;
+            n = y(n)
+        }
+        return !1
+    }
+
+    function y(t) {
+        var e = t.parentNode;
+        return 9 == t.nodeType && t != m ? a(t) : (e = e && e.assignedSlot ? e.assignedSlot.parentNode : e) && 11 == e.nodeType && e.host ? e.host : e
+    }
+
+    function l(t) {
+        return t && 9 === t.nodeType
+    }
+    "object" == typeof window && ("IntersectionObserver" in window && "IntersectionObserverEntry" in window && "intersectionRatio" in window.IntersectionObserverEntry.prototype ? "isIntersecting" in window.IntersectionObserverEntry.prototype || Object.defineProperty(window.IntersectionObserverEntry.prototype, "isIntersecting", {
+        get: function() {
+            return 0 < this.intersectionRatio
+        }
+    }) : (m = function() {
+        for (var t = window.document, e = a(t); e;) e = a(t = e.ownerDocument);
+        return t
+    }(), n = [], v = g = null, t.prototype.THROTTLE_TIMEOUT = 100, t.prototype.POLL_INTERVAL = null, t.prototype.USE_MUTATION_OBSERVER = !0, t._setupCrossOriginUpdater = function() {
+        return g = g || function(t, e) {
+            v = t && e ? w(t, e) : {
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                width: 0,
+                height: 0
+            }, n.forEach(function(t) {
+                t._checkForIntersections()
+            })
+        }
+    }, t._resetCrossOriginUpdater = function() {
+        v = g = null
+    }, t.prototype.observe = function(e) {
+        if (!this._observationTargets.some(function(t) {
+                return t.element == e
+            })) {
+            if (!e || 1 != e.nodeType) throw new Error("target must be an Element");
+            this._registerInstance(), this._observationTargets.push({
+                element: e,
+                entry: null
+            }), this._monitorIntersections(e.ownerDocument), this._checkForIntersections()
+        }
+    }, t.prototype.unobserve = function(e) {
+        this._observationTargets = this._observationTargets.filter(function(t) {
+            return t.element != e
+        }), this._unmonitorIntersections(e.ownerDocument), 0 == this._observationTargets.length && this._unregisterInstance()
+    }, t.prototype.disconnect = function() {
+        this._observationTargets = [], this._unmonitorAllIntersections(), this._unregisterInstance()
+    }, t.prototype.takeRecords = function() {
+        var t = this._queuedEntries.slice();
+        return this._queuedEntries = [], t
+    }, t.prototype._initThresholds = function(t) {
+        t = t || [0];
+        return (t = Array.isArray(t) ? t : [t]).sort().filter(function(t, e, n) {
+            if ("number" != typeof t || isNaN(t) || t < 0 || 1 < t) throw new Error("threshold must be a number between 0 and 1 inclusively");
+            return t !== n[e - 1]
+        })
+    }, t.prototype._parseRootMargin = function(t) {
+        t = (t || "0px").split(/\s+/).map(function(t) {
+            t = /^(-?\d*\.?\d+)(px|%)$/.exec(t);
+            if (t) return {
+                value: parseFloat(t[1]),
+                unit: t[2]
+            };
+            throw new Error("rootMargin must be specified in pixels or percent")
+        });
+        return t[1] = t[1] || t[0], t[2] = t[2] || t[0], t[3] = t[3] || t[1], t
+    }, t.prototype._monitorIntersections = function(e) {
+        var n, o, i, t = e.defaultView;
+        t && -1 == this._monitoringDocuments.indexOf(e) && (n = this._checkForIntersections, i = o = null, this.POLL_INTERVAL ? o = t.setInterval(n, this.POLL_INTERVAL) : (r(t, "resize", n, !0), r(e, "scroll", n, !0), this.USE_MUTATION_OBSERVER && "MutationObserver" in t && (i = new t.MutationObserver(n)).observe(e, {
+            attributes: !0,
+            childList: !0,
+            characterData: !0,
+            subtree: !0
+        })), this._monitoringDocuments.push(e), this._monitoringUnsubscribes.push(function() {
+            var t = e.defaultView;
+            t && (o && t.clearInterval(o), s(t, "resize", n, !0)), s(e, "scroll", n, !0), i && i.disconnect()
+        }), t = this.root && (this.root.ownerDocument || this.root) || m, e != t) && (t = a(e)) && this._monitorIntersections(t.ownerDocument)
+    }, t.prototype._unmonitorIntersections = function(o) {
+        var i, t, e = this._monitoringDocuments.indexOf(o); - 1 != e && (i = this.root && (this.root.ownerDocument || this.root) || m, this._observationTargets.some(function(t) {
+            var e = t.element.ownerDocument;
+            if (e == o) return !0;
+            for (; e && e != i;) {
+                var n = a(e);
+                if ((e = n && n.ownerDocument) == o) return !0
+            }
+            return !1
+        }) || (t = this._monitoringUnsubscribes[e], this._monitoringDocuments.splice(e, 1), this._monitoringUnsubscribes.splice(e, 1), t(), o != i && (e = a(o)) && this._unmonitorIntersections(e.ownerDocument)))
+    }, t.prototype._unmonitorAllIntersections = function() {
+        var t = this._monitoringUnsubscribes.slice(0);
+        this._monitoringDocuments.length = 0;
+        for (var e = this._monitoringUnsubscribes.length = 0; e < t.length; e++) t[e]()
+    }, t.prototype._checkForIntersections = function() {
+        var s, l;
+        (this.root || !g || v) && (s = this._rootIsInDom(), l = s ? this._getRootRect() : {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: 0,
+            height: 0
+        }, this._observationTargets.forEach(function(t) {
+            var e = t.element,
+                n = b(e),
+                o = this._rootContainsTarget(e),
+                i = t.entry,
+                a = s && o && this._computeTargetAndRootIntersection(e, n, l),
+                r = null,
+                t = (this._rootContainsTarget(e) ? g && !this.root || (r = l) : r = {
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    width: 0,
+                    height: 0
+                }, t.entry = new c({
+                    time: window.performance && performance.now && performance.now(),
+                    target: e,
+                    boundingClientRect: n,
+                    rootBounds: r,
+                    intersectionRect: a
+                }));
+            i ? s && o ? this._hasCrossedThreshold(i, t) && this._queuedEntries.push(t) : i && i.isIntersecting && this._queuedEntries.push(t) : this._queuedEntries.push(t)
+        }, this), this._queuedEntries.length) && this._callback(this.takeRecords(), this)
+    }, t.prototype._computeTargetAndRootIntersection = function(t, e, n) {
+        if ("none" != window.getComputedStyle(t).display) {
+            for (var o, i, a, r, s = e, l = y(t), c = !1; !c && l;) {
+                var u, d, h, f = null,
+                    p = 1 == l.nodeType ? window.getComputedStyle(l) : {};
+                if ("none" == p.display) return null;
+                if (l == this.root || 9 == l.nodeType ? (c = !0, l == this.root || l == m ? g && !this.root ? !v || 0 == v.width && 0 == v.height ? s = f = l = null : f = v : f = n : (u = (h = y(l)) && b(h), d = h && this._computeTargetAndRootIntersection(h, u, n), u && d ? (l = h, f = w(u, d)) : s = l = null)) : l != (h = l.ownerDocument).body && l != h.documentElement && "visible" != p.overflow && (f = b(l)), f && (u = f, d = s, 0, p = Math.max(u.top, d.top), f = Math.min(u.bottom, d.bottom), o = Math.max(u.left, d.left), r = f - p, s = 0 <= (a = (i = Math.min(u.right, d.right)) - o) && 0 <= r ? {
+                        top: p,
+                        bottom: f,
+                        left: o,
+                        right: i,
+                        width: a,
+                        height: r
+                    } : null), !s) break;
+                l = l && y(l)
+            }
+            return s
+        }
+    }, t.prototype._getRootRect = function() {
+        var t, e;
+        return e = this.root && !l(this.root) ? b(this.root) : (e = (t = l(this.root) ? this.root : m).documentElement, t = t.body, {
+            top: 0,
+            left: 0,
+            right: e.clientWidth || t.clientWidth,
+            width: e.clientWidth || t.clientWidth,
+            bottom: e.clientHeight || t.clientHeight,
+            height: e.clientHeight || t.clientHeight
+        }), this._expandRectByRootMargin(e)
+    }, t.prototype._expandRectByRootMargin = function(n) {
+        var t = this._rootMarginValues.map(function(t, e) {
+                return "px" == t.unit ? t.value : t.value * (e % 2 ? n.width : n.height) / 100
+            }),
+            t = {
+                top: n.top - t[0],
+                right: n.right + t[1],
+                bottom: n.bottom + t[2],
+                left: n.left - t[3]
+            };
+        return t.width = t.right - t.left, t.height = t.bottom - t.top, t
+    }, t.prototype._hasCrossedThreshold = function(t, e) {
+        var n = t && t.isIntersecting ? t.intersectionRatio || 0 : -1,
+            o = e.isIntersecting ? e.intersectionRatio || 0 : -1;
+        if (n !== o)
+            for (var i = 0; i < this.thresholds.length; i++) {
+                var a = this.thresholds[i];
+                if (a == n || a == o || a < n != a < o) return !0
+            }
+    }, t.prototype._rootIsInDom = function() {
+        return !this.root || i(m, this.root)
+    }, t.prototype._rootContainsTarget = function(t) {
+        var e = this.root && (this.root.ownerDocument || this.root) || m;
+        return i(e, t) && (!this.root || e == t.ownerDocument)
+    }, t.prototype._registerInstance = function() {
+        n.indexOf(this) < 0 && n.push(this)
+    }, t.prototype._unregisterInstance = function() {
+        var t = n.indexOf(this); - 1 != t && n.splice(t, 1)
+    }, window.IntersectionObserver = t, window.IntersectionObserverEntry = c))
+}(),
+function(t, e) {
+    "object" == typeof exports && "undefined" != typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : (t = "undefined" != typeof globalThis ? globalThis : t || self).LazyLoad = e()
+}(this, function() {
+    "use strict";
+
+    function e() {
+        return (e = Object.assign || function(t) {
+            for (var e = 1; e < arguments.length; e++) {
+                var n, o = arguments[e];
+                for (n in o) Object.prototype.hasOwnProperty.call(o, n) && (t[n] = o[n])
+            }
+            return t
+        }).apply(this, arguments)
+    }
+
+    function r(t) {
+        return e({}, Z, t)
+    }
+
+    function t(t, e) {
+        var n, o = "LazyLoad::Initialized",
+            e = new t(e);
+        try {
+            n = new CustomEvent(o, {
+                detail: {
+                    instance: e
+                }
+            })
+        } catch (t) {
+            (n = document.createEvent("CustomEvent")).initCustomEvent(o, !1, !1, {
+                instance: e
+            })
+        }
+        window.dispatchEvent(n)
+    }
+
+    function u(t) {
+        return b(t) === et
+    }
+
+    function s(t, e) {
+        t && (t.toLoadCount = e)
+    }
+
+    function S(t) {
+        for (var e, n = [], o = 0; e = t.children[o]; o += 1) "SOURCE" === e.tagName && n.push(e);
+        return n
+    }
+
+    function M(t, e) {
+        S(t).forEach(e)
+    }
+
+    function N(t) {
+        delete t[p]
+    }
+
+    function n(e, t) {
+        var n;
+        j(e) || (n = {}, t.forEach(function(t) {
+            n[t] = e.getAttribute(t)
+        }), e[p] = n)
+    }
+
+    function o(o, t) {
+        var i;
+        j(o) && (i = rt(o), t.forEach(function(t) {
+            var e, n;
+            e = o, (n = i[t = t]) ? e.setAttribute(t, n) : e.removeAttribute(t)
+        }))
+    }
+
+    function i(t, e, n) {
+        n && t.setAttribute(e, n)
+    }
+
+    function z(t, e) {
+        i(t, f, v(t, e.data_sizes)), i(t, h, v(t, e.data_srcset)), i(t, d, v(t, e.data_src))
+    }
+
+    function W(t, e) {
+        !e || 0 < e.loadingCount || 0 < e.toLoadCount || $(t.callback_finish, e)
+    }
+
+    function H(t, e, n) {
+        t.addEventListener(e, n), t.llEvLisnrs[e] = n
+    }
+
+    function B(t, e, n) {
+        delete t.llTempImage, C(n, -1), n && --n.toLoadCount, T(t, e.class_loading), e.unobserve_completed && I(t, n)
+    }
+
+    function V(t) {
+        return t.use_native && "loading" in HTMLImageElement.prototype
+    }
+
+    function U(t, c, u) {
+        t.forEach(function(t) {
+            return t.isIntersecting || 0 < t.intersectionRatio ? (i = t.target, a = t, r = c, s = u, l = 0 <= ot.indexOf(b(i)), w(i, "entered"), E(i, r.class_entered), T(i, r.class_exited), r.unobserve_entered && I(i, s), $(r.callback_enter, i, a, s), void(l || R(i, r, s))) : (a = t.target, l = t, i = c, r = u, void(_(a) || (E(a, i.class_exited), s = a, t = l, n = r, (e = i).cancel_on_exit && b(s) === m && "IMG" === s.tagName && (L(s), x(o = s, function(t) {
+                dt(t)
+            }), dt(o), ht(s), T(s, e.class_loading), C(n, -1), y(s), $(e.callback_cancel, s, t, n)), $(i.callback_exit, a, l, r))));
+            var e, n, o, i, a, r, s, l
+        })
+    }
+
+    function F(t) {
+        return Array.prototype.slice.call(t)
+    }
+
+    function l(t) {
+        return t.container.querySelectorAll(t.elements_selector)
+    }
+
+    function q(t) {
+        return b(t) === g
+    }
+
+    function G(t, e) {
+        return t = t || l(e), F(t).filter(_)
+    }
+
+    function a(t, e) {
+        var o, i, n, a, t = r(t);
+        this._settings = t, this.loadingCount = 0, n = t, a = this, K && !V(n) && (a._observer = new IntersectionObserver(function(t) {
+            U(t, n, a)
+        }, {
+            root: n.container === document ? null : n.container,
+            rootMargin: n.thresholds || n.threshold + "px"
+        })), o = t, i = this, c && window.addEventListener("online", function() {
+            var e, t, n;
+            t = i, n = l(e = o), F(n).filter(q).forEach(function(t) {
+                T(t, e.class_error), y(t)
+            }), t.update()
+        }), this.update(e)
+    }
+    var c = "undefined" != typeof window,
+        Y = c && !("onscroll" in window) || "undefined" != typeof navigator && /(gle|ing|ro)bot|crawl|spider/i.test(navigator.userAgent),
+        K = c && "IntersectionObserver" in window,
+        Q = c && "classList" in document.createElement("p"),
+        J = c && 1 < window.devicePixelRatio,
+        Z = {
+            elements_selector: ".lazy",
+            container: Y || c ? document : null,
+            threshold: 300,
+            thresholds: null,
+            data_src: "src",
+            data_srcset: "srcset",
+            data_sizes: "sizes",
+            data_bg: "bg",
+            data_bg_hidpi: "bg-hidpi",
+            data_bg_multi: "bg-multi",
+            data_bg_multi_hidpi: "bg-multi-hidpi",
+            data_poster: "poster",
+            class_applied: "applied",
+            class_loading: "loading",
+            class_loaded: "loaded",
+            class_error: "error",
+            class_entered: "entered",
+            class_exited: "exited",
+            unobserve_completed: !0,
+            unobserve_entered: !1,
+            cancel_on_exit: !0,
+            callback_enter: null,
+            callback_exit: null,
+            callback_applied: null,
+            callback_loading: null,
+            callback_loaded: null,
+            callback_error: null,
+            callback_finish: null,
+            callback_cancel: null,
+            use_native: !1
+        },
+        d = "src",
+        h = "srcset",
+        f = "sizes",
+        p = "llOriginalAttrs",
+        m = "loading",
+        X = "loaded",
+        tt = "applied",
+        g = "error",
+        et = "native",
+        nt = "data-",
+        v = function(t, e) {
+            return t.getAttribute(nt + e)
+        },
+        b = function(t) {
+            return v(t, "ll-status")
+        },
+        w = function(t, e) {
+            var n;
+            t = t, n = "data-ll-status", null !== e ? t.setAttribute(n, e) : t.removeAttribute(n)
+        },
+        y = function(t) {
+            return w(t, null)
+        },
+        _ = function(t) {
+            return null === b(t)
+        },
+        ot = [m, "loaded", tt, g],
+        $ = function(t, e, n, o) {
+            t && (void 0 === o ? void 0 === n ? t(e) : t(e, n) : t(e, n, o))
+        },
+        E = function(t, e) {
+            Q ? t.classList.add(e) : t.className += (t.className ? " " : "") + e
+        },
+        T = function(t, e) {
+            Q ? t.classList.remove(e) : t.className = t.className.replace(new RegExp("(^|\\s+)" + e + "(\\s+|$)"), " ").replace(/^\s+/, "").replace(/\s+$/, "")
+        },
+        it = function(t) {
+            return t.llTempImage
+        },
+        I = function(t, e) {
+            e && (e = e._observer) && e.unobserve(t)
+        },
+        C = function(t, e) {
+            t && (t.loadingCount += e)
+        },
+        x = function(t, e) {
+            t = t.parentNode;
+            t && "PICTURE" === t.tagName && S(t).forEach(e)
+        },
+        k = [d],
+        at = [d, "poster"],
+        A = [d, h, f],
+        j = function(t) {
+            return !!t[p]
+        },
+        rt = function(t) {
+            return t[p]
+        },
+        st = function(t, e, n) {
+            E(t, e.class_loading), w(t, m), n && (C(n, 1), $(e.callback_loading, t, n))
+        },
+        lt = {
+            IMG: function(t, e) {
+                x(t, function(t) {
+                    n(t, A), z(t, e)
+                }), n(t, A), z(t, e)
+            },
+            IFRAME: function(t, e) {
+                n(t, k), i(t, d, v(t, e.data_src))
+            },
+            VIDEO: function(t, e) {
+                M(t, function(t) {
+                    n(t, k), i(t, d, v(t, e.data_src))
+                }), n(t, at), i(t, "poster", v(t, e.data_poster)), i(t, d, v(t, e.data_src)), t.load()
+            }
+        },
+        ct = ["IMG", "IFRAME", "VIDEO"],
+        ut = function(t, e, n) {
+            t.removeEventListener(e, n)
+        },
+        O = function(t) {
+            return !!t.llEvLisnrs
+        },
+        L = function(t) {
+            if (O(t)) {
+                var e, n = t.llEvLisnrs;
+                for (e in n) {
+                    var o = n[e];
+                    ut(t, e, o)
+                }
+                delete t.llEvLisnrs
+            }
+        },
+        D = function(r, s, l) {
+            var t, e, c = it(r) || r;
+            O(c) || (O(t = c) || (t.llEvLisnrs = {}), e = "VIDEO" === t.tagName ? "loadeddata" : "load", H(t, e, function(t) {
+                var e = 0,
+                    n = r,
+                    o = s,
+                    i = l,
+                    a = u(n);
+                B(n, o, i), E(n, o.class_loaded), w(n, X), $(o.callback_loaded, n, i), a || W(o, i), L(c)
+            }), H(t, "error", function(t) {
+                var e = 0,
+                    n = r,
+                    o = s,
+                    i = l,
+                    a = u(n);
+                B(n, o, i), E(n, o.class_error), w(n, g), $(o.callback_error, n, i), a || W(o, i), L(c)
+            }))
+        },
+        R = function(t, e, n) {
+            var o, i, a, r, s; - 1 < ct.indexOf(t.tagName) ? (D(a = t, o = e, s = n), o = o, s = s, (i = lt[(a = a).tagName]) && (i(a, o), st(a, o, s))) : (i = e, a = n, (o = t).llTempImage = document.createElement("IMG"), D(o, i, a), j(s = o) || (s[p] = {
+                backgroundImage: s.style.backgroundImage
+            }), s = a, t = v(e = o, (n = i).data_bg), r = v(e, n.data_bg_hidpi), (r = J && r ? r : t) && (e.style.backgroundImage = 'url("'.concat(r, '")'), it(e).setAttribute(d, r), st(e, n, s)), t = a, n = v(r = o, (e = i).data_bg_multi), s = v(r, e.data_bg_multi_hidpi), (s = J && s ? s : n) && (r.style.backgroundImage = s, n = t, E(s = r, (t = e).class_applied), w(s, tt), n) && (t.unobserve_completed && I(s, t), $(t.callback_applied, s, n)))
+        },
+        dt = function(t) {
+            t.removeAttribute(d), t.removeAttribute(h), t.removeAttribute(f)
+        },
+        ht = function(t) {
+            x(t, function(t) {
+                o(t, A)
+            }), o(t, A)
+        },
+        ft = {
+            IMG: ht,
+            IFRAME: function(t) {
+                o(t, k)
+            },
+            VIDEO: function(t) {
+                M(t, function(t) {
+                    o(t, k)
+                }), o(t, at), t.load()
+            }
+        },
+        pt = ["IMG", "IFRAME", "VIDEO"];
+    if (a.prototype = {
+            update: function(t) {
+                var e, n, o, i, a = this._settings,
+                    t = G(t, a);
+                s(this, t.length), !Y && K ? V(a) ? (o = a, i = this, t.forEach(function(t) {
+                    var e, n; - 1 !== pt.indexOf(t.tagName) && (e = o, n = i, (t = t).setAttribute("loading", "lazy"), D(t, e, n), (n = lt[t.tagName]) && n(t, e), w(t, et))
+                }), s(i, 0)) : (a = t, (e = this._observer).disconnect(), n = e, a.forEach(function(t) {
+                    n.observe(t)
+                })) : this.loadAll(t)
+            },
+            destroy: function() {
+                this._observer && this._observer.disconnect(), l(this._settings).forEach(function(t) {
+                    N(t)
+                }), delete this._observer, delete this._settings, delete this.loadingCount, delete this.toLoadCount
+            },
+            loadAll: function(t) {
+                var e = this,
+                    n = this._settings;
+                G(t, n).forEach(function(t) {
+                    I(t, e), R(t, n, e)
+                })
+            },
+            restoreAll: function() {
+                var i = this._settings;
+                l(i).forEach(function(t) {
+                    var e, n, o;
+                    e = i, (o = ft[(n = t = t).tagName]) ? o(n) : j(o = n) && (n = rt(o), o.style.backgroundImage = n.backgroundImage), o = e, _(n = t) || u(n) || (T(n, o.class_entered), T(n, o.class_exited), T(n, o.class_applied), T(n, o.class_loading), T(n, o.class_loaded), T(n, o.class_error)), y(t), N(t)
+                })
+            }
+        }, a.load = function(t, e) {
+            e = r(e);
+            R(t, e)
+        }, a.resetStatus = function(t) {
+            y(t)
+        }, c) {
+        var mt = a,
+            P = window.lazyLoadOptions;
+        if (P)
+            if (P.length)
+                for (var gt, vt = 0; gt = P[vt]; vt += 1) t(mt, gt);
+            else t(mt, P)
+    }
+    return a
+}),
+function(e, n) {
+    "function" == typeof define && define.amd ? define(["jquery"], function(t) {
+        return n(e, t)
+    }) : "object" == typeof module && "object" == typeof module.exports ? module.exports = n(e, require("jquery")) : e.lity = n(e, e.jQuery || e.Zepto)
+}("undefined" != typeof window ? window : this, function(t, m) {
+    "use strict";
+
+    function g(t) {
+        var e = E();
+        return c && t.length ? (t.one(c, e.resolve), setTimeout(e.resolve, 500)) : e.resolve(), e.promise()
+    }
+
+    function v(t, e, n) {
+        if (1 === arguments.length) return m.extend({}, t);
+        if ("string" == typeof e) {
+            if (void 0 === n) return void 0 === t[e] ? null : t[e];
+            t[e] = n
+        } else m.extend(t, e);
+        return this
+    }
+
+    function a(t) {
+        var e = t.indexOf("?"); - 1 < e && (t = t.substr(e + 1));
+        for (var n, o = decodeURI(t.split("#")[0]).split("&"), i = {}, a = 0, r = o.length; a < r; a++) o[a] && (i[(n = o[a].split("="))[0]] = n[1]);
+        return i
+    }
+
+    function n(t, e, n, o) {
+        return e && e.element().addClass("lity-iframe"), n && (e = t, t = (n = n) ? ("string" === m.type(n) && (n = a(n)), -1 < e.indexOf("?") && (e = (i = e.split("?")).shift(), n = m.extend({}, a(i[0]), n)), e + "?" + m.param(n)) : e), o && (i = t, t = -1 === (e = (n = o).indexOf("#")) ? i : i + (n = 0 < e ? n.substr(e) : n)), '<div class="lity-iframe-container"><iframe frameborder="0" allowfullscreen allow="autoplay; fullscreen" src="' + t + '"/></div>';
+        var i
+    }
+
+    function e(t, e) {
+        function n() {
+            i.reject(m('<span class="lity-error"></span>').append("Failed loading image"))
+        }
+        var e = e.opener() && e.opener().data("lity-desc") || "Image with no description",
+            o = m('<img src="' + t + '" alt="' + e + '"/>'),
+            i = E();
+        return o.on("load", function() {
+            if (0 === this.naturalWidth) return n();
+            i.resolve(o)
+        }).on("error", n), i.promise()
+    }
+
+    function b() {
+        return _.documentElement.clientHeight || Math.round($.height())
+    }
+
+    function w(t) {
+        var e, n = o();
+        n && (27 === t.keyCode && n.options("esc") && n.close(), 9 === t.keyCode) && (t = t, n = (n = n).element().find(s), e = n.index(_.activeElement), t.shiftKey && e <= 0 ? (n.get(n.length - 1).focus(), t.preventDefault()) : t.shiftKey || e !== n.length - 1 || (n.get(0).focus(), t.preventDefault()))
+    }
+
+    function y() {
+        m.each(I, function(t, e) {
+            e.resize()
+        })
+    }
+
+    function o() {
+        return 0 === I.length ? null : I[0]
+    }
+
+    function i(t, e, n, o) {
+        var i, a, r, s, l, c, u, d, h = this,
+            f = !1,
+            p = !1;
+        e = m.extend({}, k, e), i = m(e.template), h.element = function() {
+            return i
+        }, h.opener = function() {
+            return n
+        }, h.content = function() {
+            return a
+        }, h.options = m.proxy(v, h, e), h.handlers = m.proxy(v, h, e.handlers), h.resize = function() {
+            f && !p && a.css("max-height", b() + "px").trigger("lity:resize", [h])
+        }, h.close = function() {
+            if (f && !p) {
+                p = !0, (e = h).element().attr(C, "true"), 1 === I.length && (T.removeClass("lity-active"), $.off({
+                    resize: y,
+                    keydown: w
+                })), ((I = m.grep(I, function(t) {
+                    return e !== t
+                })).length ? I[0].element() : m(".lity-hidden")).removeClass("lity-hidden").each(function() {
+                    var t = m(this),
+                        e = t.data(x);
+                    e ? t.attr(C, e) : t.removeAttr(C), t.removeData(x)
+                });
+                var t = E();
+                if (o && (_.activeElement === i[0] || m.contains(i[0], _.activeElement))) try {
+                    o.focus()
+                } catch (t) {}
+                return a.trigger("lity:close", [h]), i.removeClass("lity-opened").addClass("lity-closed"), g(a.add(i)).always(function() {
+                    a.trigger("lity:remove", [h]), i.remove(), i = void 0, t.resolve()
+                }), t.promise()
+            }
+            var e
+        }, r = t, s = h, l = e.handlers, t = e.handler, u = "inline", d = m.extend({}, l), t && d[t] ? (c = d[t](r, s), u = t) : (m.each(["inline", "iframe"], function(t, e) {
+            delete d[e], d[e] = l[e]
+        }), m.each(d, function(t, e) {
+            return !e || !(!e.test || e.test(r, s)) || (!1 !== (c = e(r, s)) ? (u = t, !1) : void 0)
+        })), e = {
+            handler: u,
+            content: c || ""
+        }, i.attr(C, "false").addClass("lity-loading lity-opened lity-" + e.handler).appendTo("body").focus().on("click", "[data-lity-close]", function(t) {
+            m(t.target).is("[data-lity-close]") && h.close()
+        }).trigger("lity:open", [h]), t = h, 1 === I.unshift(t) && (T.addClass("lity-active"), $.on({
+            resize: y,
+            keydown: w
+        })), m("body > *").not(t.element()).addClass("lity-hidden").each(function() {
+            var t = m(this);
+            void 0 === t.data(x) && t.data(x, t.attr(C) || null)
+        }).attr(C, "true"), m.when(e.content).always(function(t) {
+            a = m(t).css("max-height", b() + "px"), i.find(".lity-loader").each(function() {
+                var t = m(this);
+                g(t).always(function() {
+                    t.remove()
+                })
+            }), i.removeClass("lity-loading").find(".lity-content").empty().append(a), f = !0, a.trigger("lity:ready", [h])
+        })
+    }
+
+    function r(t, e, n) {
+        t.preventDefault ? (t.preventDefault(), t = (n = m(this)).data("lity-target") || n.attr("href") || n.attr("src")) : n = m(n);
+        e = new i(t, m.extend({}, n.data("lity-options") || n.data("lity"), e), n, _.activeElement);
+        if (!t.preventDefault) return e
+    }
+    var _ = t.document,
+        $ = m(t),
+        E = m.Deferred,
+        T = m("html"),
+        I = [],
+        C = "aria-hidden",
+        x = "lity-" + C,
+        s = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])',
+        k = {
+            esc: !0,
+            handler: null,
+            handlers: {
+                image: e,
+                inline: function(t, e) {
+                    var n, o, i;
+                    try {
+                        n = m(t)
+                    } catch (t) {
+                        return !1
+                    }
+                    return !!n.length && (o = m('<i style="display:none !important"></i>'), i = n.hasClass("lity-hide"), e.element().one("lity:remove", function() {
+                        o.before(n).remove(), i && !n.closest(".lity-content").length && n.addClass("lity-hide")
+                    }), n.removeClass("lity-hide").after(o))
+                },
+                iframe: function(t, e) {
+                    return n(t, e)
+                }
+            },
+            template: '<div class="lity" role="dialog" aria-label="Dialog Window (Press escape to close)" tabindex="-1"><div class="lity-wrap" data-lity-close role="document"><div class="lity-loader" aria-hidden="true">Loading...</div><div class="lity-container"><div class="lity-content"></div><button class="lity-close" type="button" aria-label="Close (Press escape to close)" data-lity-close>&times;</button></div></div></div>'
+        },
+        l = /(^data:image\/)|(\.(png|jpe?g|gif|svg|webp|bmp|ico|tiff?)(\?\S*)?$)/i,
+        c = function() {
+            var t, e = _.createElement("div"),
+                n = {
+                    WebkitTransition: "webkitTransitionEnd",
+                    MozTransition: "transitionend",
+                    OTransition: "oTransitionEnd otransitionend",
+                    transition: "transitionend"
+                };
+            for (t in n)
+                if (void 0 !== e.style[t]) return n[t];
+            return !1
+        }();
+    return e.test = function(t) {
+        return l.test(t)
+    }, r.version = "3.0.0-dev", r.options = m.proxy(v, r, k), r.handlers = m.proxy(v, r, k.handlers), r.current = o, r.iframe = n, m(_).on("click.lity", "[data-lity]", r), r
+});
+var llAnimWrap, llAnim, base = window.base || {},
+    webroot = "/",
+    langpath = "",
+    htmltag = (! function() {
+        var t = document.documentElement;
+        switch (!0) {
+            case t.classList.contains("tw"):
+                langpath = "tw/";
+                break;
+            case t.classList.contains("fr"):
+                langpath = "fr/"
+        }
+    }(), document.documentElement),
+    update100vh = (base.getPageY = function() {
+        return window.pageYOffset || ("clientHeight" in htmltag ? htmltag : document.body).scrollTop
+    }, base.getWinW = function() {
+        return window.innerWidth || htmltag.clientWidth || document.body.clientWidth || $(window).width()
+    }, base.getWinH = function() {
+        return window.innerHeight || htmltag.clientHeight || document.body.clientHeight || $(window).height()
+    }, base.isTouch = "ontouchstart" in window || 0 < navigator.maxTouchPoints || 0 < navigator.msMaxTouchPoints, base.isTouch ? htmltag.className = htmltag.className + " touch" : htmltag.className = htmltag.className + " no-touch", base.ios = function() {
+        var t = /iP(hone|od|ad)/.test(navigator.platform) ? (t = navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/), {
+            status: !0,
+            version: parseInt(t[1], 10),
+            info: parseInt(t[1], 10) + "." + parseInt(t[2], 10) + "." + parseInt(t[3] || 0, 10)
+        }) : {
+            status: !1,
+            version: !1,
+            info: ""
+        };
+        return t
+    }(), base.android = function() {
+        var t = (ua = navigator.userAgent.toLowerCase()).match(/android\s([0-9\.]*)/i);
+        return parseFloat(t ? t[1] : void 0)
+    }(), $.fn.blockTouchmove = function(o) {
+        return this.each(function() {
+            $(this).off("touchstart.btm touchmove.btm").on("touchstart.btm", function(t) {
+                this.btm_y = (t.originalEvent.touches ? t.originalEvent.touches[0] : t.originalEvent).screenY
+            }).on("touchmove.btm", function(t) {
+                if (null != o && $(o).find(t.target)[0]) return !0;
+                var e, n;
+                this.scrollHeight > this.offsetHeight ? (n = (t.originalEvent.touches ? t.originalEvent.touches[0] : t.originalEvent).screenY, e = this.btm_y <= n && this.scrollTop <= 0, n = this.btm_y >= n && this.scrollHeight - this.scrollTop <= $(this).innerHeight(), (e || n) && t.cancelable && t.preventDefault()) : t.cancelable && t.preventDefault()
+            })
+        })
+    }, 100 < base.getPageY() && (document.documentElement.className += " header--fixed scrolled-down"), $(function() {
+        var i, a = $("html"),
+            r = a.hasClass("header--fixed"),
+            s = 0;
+
+       
+        setTimeout(function() {
+            a.addClass("header--anim")
+        }, 300)
+    }), function() {
+        function e() {
+            document.documentElement.style.setProperty("--vh", window.innerHeight + "px")
+        }
+        return window.addEventListener("orientationchange", function() {
+            function t() {
+                e(), window.removeEventListener("resize", t)
+            }
+            window.addEventListener("resize", t)
+        }), e(), e
+    }()),
+    gatrace = ($(function() {
+        var i;
+
+        function a() {
+            clearTimeout(i), i = setTimeout(function() {
+                base.closePanel()
+            }, 300)
+        }
+
+        function r(e, t) {
+            var n, o, i, a = e.attr("js-panel-btn");
+            e.hasClass("opened") && 1 != t ? (e.removeClass("opened"), e.attr("aria-expanded", !1), base.closePanel()) : (e.addClass("opened"), e.attr("aria-expanded", !0), n = (t = $('[js-panel="' + a + '"]')).outerWidth(), o = base.getWinW(), i = e.parent().position().left, t.css({
+                left: i = o < i + n + 20 ? o - n - 20 : i
+            }), base.openPanel(a, e), t.one("close", function(t) {
+                e.removeClass("opened"), e.attr("aria-expanded", !1)
+            }))
+        }
+        base.isTouch ? $(document).on("click", '.navbar [js-panel-btn], [js-panel-btn="langsel"]', function(t) {
+            var e = $(this);
+            "click" === t.type && (r(e), t.stopPropagation(), t.preventDefault())
+        }) : ($(document).on("mouseenter mouseleave click focusin", '.navbar [js-panel-btn], [js-panel-btn="langsel"]', function(t) {
+            var e = this,
+                n = $(e),
+                o = n.attr("js-panel-btn");
+            if (!$('[js-panel="' + o + '"]')[0]) return !0;
+            switch (t.type) {
+                case "mouseenter":
+                case "focusin":
+                    clearTimeout(i), i = setTimeout(function() {
+                        r(n, !0), e.mouseDisabled = !0, i = setTimeout(function() {
+                            e.mouseDisabled = !1
+                        }, 350)
+                    }, base.activePanelId ? 1 : 150);
+                    break;
+                case "mouseleave":
+                    a();
+                    break;
+                case "click":
+                    if (e.mouseDisabled) return !0;
+                    r(n)
+            }
+        }), $(document).on("mouseenter", "[js-panel]", function(t) {
+            clearTimeout(i)
+        }), $(document).on("mouseleave", '[js-panel^="subnav-"]', function(t) {
+            a()
+        }), $(document).on("focusin", "[js-panel] .tabclose", function(t) {
+            a()
+        }), $(document).on("keydown", ".masthead", function(t) {
+            27 == t.keyCode && base.closePanel()
+        }))
+    }), $(function() {
+        var e;
+        $(document).on("click", ".masthead-toggle", function() {
+            $("html").hasClass("mbpanel--open") ? base.closePanel() : base.openPanel("mbpanel")
+        }), $(document).on("open close", '[js-panel="mbpanel"]', function(t) {
+            "open" == t.type ? ($(".mbpanel-col").blockTouchmove(), e = window.scrollY, $("html").addClass("mbpanel--open"), base.ignoreScrolled = !0, null != e && ($("html")[0].scrollTo(0, e), $("body")[0].scrollTo(0, e), window.scrollTo(0, e))) : ($('[js-panel="mbpanel"]').addClass("animate-out"), setTimeout(function() {
+                $('[js-panel="mbpanel"]').removeClass("animate-out")
+            }, 250), $("html").removeClass("mbpanel--open"), null != e && window.scrollTo(0, e), base.ignoreScrolled = !1), $(".masthead-toggle").attr("aria-expanded", "open" == t.type)
+        })
+    }), $(function() {
+        document.documentElement.addEventListener(base.isTouch ? "touchend" : "click", function(t) {
+            if (0 == $(".panel--active").length) return !0;
+            if (!$(".masthead").find(t.target)[0] || $(t.target).is('[js-panel="mbpanel"]')) return base.closePanel(), t.stopPropagation(), t.stopImmediatePropagation(), !1
+        }, !0)
+    }), base.activePanelId = void 0, base.openPanel = function(t) {
+        var e = $('[js-panel="' + t + '"]');
+        if (!e[0]) return !1;
+        base.activePanelId != t && (base.closePanel(), base.activePanelId = t, e.addClass("panel--active"), e.trigger("open"))
+    }, base.closePanel = function() {
+        var t = $(".panel--active[js-panel]");
+        if (!t[0]) return !1;
+        base.activePanelId = void 0, t.removeClass("panel--active"), t.trigger("close")
+    }, $(function() {
+        ($(".navbar").is(":visible") ? ($(".navbar").attr("role", "navigation"), $(".mbpanel, .masthead-toggle")) : ($(".mbpanel").attr("role", "navigation"), $(".navbar, .masthead-langsel"))).attr("aria-hidden", !0)
+    }), $(function() {
+        var t, e, r = "foldable--expanded",
+            s = /^\/fold\-\d{1,2}$/i;
+
+        function l(t, e) {
+            var n = $(t),
+                t = $(t).closest("[js-foldable-group]"),
+                o = t[0].id,
+                i = t.attr("js-foldable-group"),
+                a = t.find("[js-foldable-body]").first();
+            e || !t.hasClass(r) ? (a.slideDown(300, function() {
+                n.trigger("foldAfterOpen", [n, a, i])
+            }), t.addClass(r), n.trigger("foldBeforeOpen", [n, a, i]), n.attr("aria-expanded", !0).attr("aria-selected", !0), a.attr("aria-hidden", !1), i && $("." + r + '[js-foldable-group="' + i + '"]').not(t).each(function() {
+                l($(this).find("[js-foldable-head]"), !1)
+            }), null == e && o && s.test("/" + o) && history.replaceState({}, "", "#/" + o)) : (a.slideUp(300, function() {
+                n.trigger("foldAfterClose", [n, a, i])
+            }), t.removeClass(r), n.trigger("foldBeforeClose", [n, a, i]), n.attr("aria-expanded", !1).attr("aria-selected", !1), a.attr("aria-hidden", !0))
+        }
+        $(document).on("click.foldable keydown.foldable", "[js-foldable-head]", function(t) {
+            ("click" == t.type || "keydown" == t.type && 13 == t.keyCode) && (t.preventDefault(), l(this))
+        }), $("." + r + " [js-foldable-head]").each(function() {
+            l(this, !0)
+        }), s.test(location.hash.substr(1)) && (t = "#" + location.hash.substr(2), (t = $(t + " [js-foldable-head]"))[0]) && (l(t, !0), e = t.offset().top - 70, setTimeout(function() {
+            window.scrollTo(0, e)
+        }, 500), setTimeout(function() {
+            window.scrollTo(0, e)
+        }, 1e3))
+    }), {
+        debug: !1,
+        pv: function(t, e) {
+            gatrace.debug && console.log("%cGA pv=> " + t, "background:lime;margin-left:20px;"), t && window.gtag && gtag("event", "page_view", {
+                page_path: t,
+                page_title: e || document.title
+            })
+        },
+        ev: function(t, e, n) {
+            gatrace.debug && console.log("%cGA ev=> " + t + " | " + (e || "click") + " | " + (n || "all"), "background:cyan;margin-left:20px;"), t && window.gtag && gtag("event", e || "click", {
+                event_category: t,
+                event_label: n || "all"
+            })
+        }
+    }),
+    llSite = (! function() {
+        var t = "7% 0px 5% 0px",
+            e = ".anim-wrap";
+        Array.prototype.forEach.call(document.querySelectorAll(e), function(t, e) {
+            t.classList.add("ll")
+        }), llAnimWrap = new LazyLoad({
+            elements_selector: e,
+            thresholds: t,
+            class_entered: "llin",
+            class_exited: "llout",
+            callback_enter: function(e) {
+                $(function() {
+                    var t = $(e);
+                    t[0].visited ? t.trigger("llIn", [!0]) : (t.trigger("llIn", [!1]), t[0].visited = !0)
+                })
+            },
+            callback_exit: function(t) {
+                $(function() {
+                    $(t).trigger("llOut")
+                })
+            }
+        }), e = ".anim-fade, .anim-fadeout, .anim-up, .anim-down, .anim-left, .anim-right, .anim-scale-in", Array.prototype.forEach.call(document.querySelectorAll(e), function(t, e) {
+            t.classList.add("ll")
+        }), llAnim = new LazyLoad({
+            elements_selector: e,
+            thresholds: t,
+            class_entered: "llin",
+            class_exited: "llout"
+        })
+    }(), redir.prompt(), ! function() {
+        WebFontConfig = {
+            google: {
+                families: ("" == langpath || "fr/" == langpath ? "Poppins:wght@500;700,Noto+Sans+TC:wght@500;700" : "Poppins:wght@500;700,Noto+Sans+TC:wght@500;700;900").split(","),
+                display: "swap",
+                version: 2
+            }
+        };
+        var t = document.createElement("script"),
+            e = (t.src = "/js/libs/webfontloader.js", t.async = "true", document.getElementsByTagName("script")[0]);
+        e.parentNode.insertBefore(t, e)
+    }(), new LazyLoad({
+        threshold: base.isTouch ? 400 : 200,
+        callback_error: function(t) {},
+        callback_loaded: function(t) {
+            window.picturefill && picturefill({
+                reevaluate: !0
+            }), window.Swiper && (t = $(t).parents(".swiper-container")[0]) && t.swiper && t.swiper.update()
+        }
+    }));
+
+function includeHeaderFooter() {
+    $("[js-inc]").each(function() {
+        var o = $(this),
+            t = (document.querySelector('script[src*="js/main"]').src || "").split("?")[1] || "",
+            t = o.attr("js-inc") + "?" + t;
+        $.ajax(t, {
+            success: function(t, e, n) {
+                switch (o.append(t), !0) {
+                    case o.hasClass("masthead"):
+                        base.setActiveNavbarItem();
+                        break;
+                    case o.hasClass("mastfoot"):
+                        llSite.update()
+                }
+            }
+        })
+    })
+}
+$(includeHeaderFooter), base.setActiveNavbarItem = function(t) {
+    var e, n = location.pathname.toLowerCase();
+    if (/taiwan\-/.test(n)) e = "performing-arts";
+    else if (!(e = t || (n.match(/\/(about|venue|performing\-arts|program|credits|news)/) || [, null])[1])) return;
+    t = $(".navbar-link").filter('[href*="/' + e + '."]'), mbpanelBtn = $(".mbpanel-link").filter('[href*="/' + e + '."]'), t[0] && t.parent().addClass("active"), mbpanelBtn[0] && mbpanelBtn.parent().addClass("active")
+}, $(function() {
+    base.setActiveNavbarItem()
+}), $(function() {
+    $(document).on("mousedown touchstart", ".masthead-langsel a, .mbpanel-langsel a", function(t) {
+        var e = $(this).attr("href"),
+            n = "";
+        /\/tw\//.test(e) ? n = "tw/" : /\/fr\//.test(e) && (n = "fr/"), redir.storeLang(n)
+    })
+}), $(function() {
+    $('[href="#backtop"]').on("click", function(t) {
+        window.scrollTo({
+            left: 0,
+            top: 0,
+            behavior: "smooth"
+        }), t.preventDefault()
+    })
+});
+var swiperDefaults = {
+    autoHeight: !1,
+    loop: !1,
+    threshold: 3,
+    touchAngle: 30,
+    keyboard: !0,
+    mousewheel: {
+        forceToAxis: !0
+    },
+    simulateTouch: !0,
+    centeredSlides: !1,
+    centerInsufficientSlides: !1,
+    updateOnWindowResize: !base.isTouch,
+    watchOverflow: !0,
+    observeParents: !0
+};
+$(function() {
+        var t, e, n = $(".venue-gallery, .program-gallery");
+        n[0] && (e = n.hasClass("venu-gallery") ? "venue" : "program", t = $(".swiper-slide", n).length, e = $.extend(!0, {}, swiperDefaults, {
+            slidesPerView: "venue" == e ? 1.5 : 1.8,
+            centeredSlides: !0,
+            loop: !0,
+            initialSlide: Math.floor(Math.random() * t),
+            autoplay: {
+                delay: 1500,
+                disableOnInteraction: !1
+            },
+            mousewheel: !1,
+            navigation: {
+                prevEl: $(".btn-swipeprev", n),
+                nextEl: $(".btn-swipenext", n)
+            },
+            on: {
+                init: function() {
+                    $(".lazy", n).get();
+                    llSite.update()
+                }
+            }
+        }), new Swiper(n, e))
+    }), $(function() {
+        $(".program-menu [js-tabmenu-btn]").on("click", function(t) {
+            var e = $($(this).attr("href")),
+                n = "active";
+            e[0] && ($(this).addClass(n).attr("aria-expanded", !0).attr("aria-selected", !0), $("[js-tabmenu-btn]").not(this).removeClass(n).attr("aria-expanded", !1).attr("aria-selected", !1), e.addClass(n).attr("aria-hidden", !1), $("[js-tabmenu-page]").not(e).removeClass(n).attr("aria-hidden", !0)), t.preventDefault()
+        })
+    }), $(function() {
+        var e = $('.btn[href="#parkmap"]');
+
+        function t() {
+            var t = Math.max(0, e.offset().top - base.getPageY()) - 50;
+            window.scrollBy({
+                top: t,
+                behavior: "smooth"
+            })
+        }
+        e[0] && (e.on("foldBeforeOpen", function() {
+            $(".mastbody").removeClass("overflow-hidden")
+        }).on("foldAfterOpen", t), e.add('.btn-dismiss[href="#parkmap"]').on("foldBeforeClose", function() {
+            $(".mastbody").addClass("overflow-hidden")
+        }).on("foldAfterClose", t))
+    }), $(function() {
+        function t() {
+            var e = base.getWinW() < 768;
+            $(".ribbon--w1, .ribbon--w2").each(function() {
+                var t = $(this).nextAll(".intro"),
+                    t = t.position().top + t.outerHeight() + 30;
+                $(this).css("top", e ? t : "")
+            })
+        }
+        $(".palist")[0] && ($(window).on("resize orientationchange", t), t(), setTimeout(t, 100))
+    }), $(function() {
+        var t = $(".pabox-pics");
+        t[0] && t.each(function(t) {
+            new Swiper(this, $.extend(!0, {}, swiperDefaults, {
+                slidesPerView: 1,
+                navigation: {
+                    prevEl: $(".btn-swipeprev", this),
+                    nextEl: $(".btn-swipenext", this)
+                },
+                pagination: {
+                    el: $(".dots", this),
+                    type: "bullets",
+                    clickable: !0,
+                    renderBullet: function(t, e) {
+                        return '<b class="' + e + '"></b>'
+                    }
+                }
+            }))
+        })
+    }), $(function() {
+        $(document).on("lity:ready", function(t, e) {
+            var n = $(".lity-wrap .pabox-inner");
+            n[0] && $(".lity-close").appendTo(n)
+        }), $(document).on("lity:close", function(t, e) {
+            $(".lity-wrap .pabox-inner")[0] && $(".lity-close").remove()
+        }), $(document).on("click", ".pabox .btn-dismiss", function(t) {
+            $(".lity-close").trigger("click"), t.preventDefault()
+        })
+    }), $(function() {
+        var t;
+        /id\-/.test(location.hash) && (/performing\-arts/.test(location.pathname) || /program/.test(location.pathname)) && (t = location.hash.replace("#id-", ""), $('[href="#' + t + 'Detail"]').first().trigger("click"))
+    }), $(function() {
+        var t = $("[js-va_json]");
+        if (!t[0]) return !1;
+        var e = t.attr("js-va_json"),
+            n = t.attr("js-va_type");
+        $.getJSON(e, function(t) {
+            var e, t = t.data.filter(function(t) {
+                return t.type === n
+            });
+            $.each(t, function(t, e) {
+                var n = $('.valist-row[js-va_group="' + e.group + '"]');
+                if (!n[0]) return !0;
+                var o = "tw/" == langpath ? e.media : (e.media, ""),
+                    i = '<li class="vaitem  col-6 col-md-4 col-lg-3   px-1 mb-5   anim-up anim-fade anim-once" js-va_group="' + e.group + '" js-va_type="' + e.type + '">',
+                    i = (i = (i += '<a class="vaitem-inner  d-block" href="https://artbank.tfaf.org.tw/' + ("tw/" == langpath ? "" : "en/") + "work_page.aspx?RNO=" + e.url + '" target="_blank" rel="nofollow noreferrer noopener">') + ('<figure class="vaitem-pic mb-3"><div class="vaitem-pic-inner"><img class="d-block lazy  ofi-contain" width="400" height="240" data-src="' + webroot + "img/va/" + (/單頻道/.test(e.media) ? "vd/" : "low/") + e.id + '.webp" alt="' + e.title + '"></div></figure>')) + ('<p class="vaitem-title h5 h6-mb lh-md mb-1">' + ("tw/" == langpath ? e.title : e.title_en) + '&nbsp; <em class="text-gray small">| </em>&nbsp;<nobr class="fw-bolder small">' + ("tw/" == langpath ? e.artist : e.artist_en) + "</nobr></p>");
+                n.append(i = i + ('<p class="vaitem-meta h7 h7-mb">' + o + "</p>") + "</a></li>")
+            }), t = location.hash.substr(1), /series\d/.test(t) && (e = $('[name="' + location.hash.substr(1) + '"]').offset().top, setTimeout(function() {
+                $("html, body").scrollTop(e)
+            }, 100)), llSite.update(), llAnim.update()
+        })
+    }), $(function() {
+        var t = $(".btn-copyurl");
+        t[0] && t.on("click", function(t) {
+            /iPad|iPhone|iPod/.test(navigator.platform) && window.navigator.share ? navigator.share({
+                title: "",
+                text: "",
+                url: $(this).attr("href")
+            }) : ($(".copyurl-input")[0].select(), document.execCommand("copy"), $(".copyurl-hint").removeClass("d-none"), setTimeout(function() {
+                $(".copyurl-hint").addClass("d-none")
+            }, 2e3)), t.preventDefault()
+        })
+    }), $(function() {
+        $(document).on("click", "[ga-ev]", function(t) {
+            var e = $(this).attr("ga-ev").split(",");
+            gatrace.ev(e[0], e[1])
+        })
+    }), $.fn.coverBg = function(t, e, n) {
+        var o, i, a, r;
+        return n < t / e ? (r = -.5 * ((i = (o = t) * (1 / n)) - e), a = 0) : (a = -.5 * ((o = (i = e) * n) - t), r = 0), this.each(function() {
+            $(this).css({
+                width: o,
+                height: i,
+                left: a,
+                top: r
+            })
+        })
+    }, $(function() {
+        var t, e, n, o, i;
+
+        function a() {
+            $(".splash-video video").on("canplaythrough", function(t) {
+                $("html").hasClass("splash--done") || (clearTimeout(o), i ? r() : (i = !0, setTimeout(r, 10), setTimeout(s, 10 + 1e3 * (e - .5)), setTimeout(l, 10 + 1e3 * e), $("html").addClass("splash--start")))
+            })
+        }
+
+        function r() {
+            try {
+                $(".splash-video video")[0].play()
+            } catch (t) {}
+        }
+
+        function s() {
+            $("html").addClass("splash--out")
+        }
+
+        function l() {
+            $(".splash").remove(), $("html").addClass("splash--done"), $("html").removeClass("splash--out splash--start"), t.setItem("splash", parseInt(t.getItem("splash") || 0) + 1)
+        }
+
+        function c() {
+            l(), t.setItem("splash", "2"), llSite.update()
+        }
+
+        function u() {
+            $(".splash-video").coverBg(base.getWinW(), $(".splash-videowrap").outerHeight(), 16 / 9)
+        }
+        $(".splash")[0] && (t = window.sessionStorage || {
+            getItem: function() {},
+            setItem: function() {}
+        }, i = !(e = 14.3), /skip=1/.test(location.search) || 2 <= parseInt(t.getItem("splash") || 0) ? c() : (n = webroot + "img/video/tvc" + (base.getWinW() < 576 ? "-mb" : "") + ".mp4", $(".splash-video").append('<video width="100%" height="100%" data-src="' + n + '" preload="metadata" muted playsinline></video>'), new LazyLoad({
+            threshold: 200,
+            elements_selector: ".splash-video video",
+            callback_loaded: a
+        }), o = setTimeout(a, 8e3), $(".splash-skip").on("click", function(t) {
+            $(".splash").fadeOut(120, c), t.preventDefault()
+        }), u(), setTimeout(u, 31), setTimeout(u, 1111), $(window).on("resize orientationchange", $.debounce(66, u))))
+    }), base.isTouch && document.querySelector("video[autoplay]") && $("body").one("click touchstart", function() {
+        try {
+            $("video[autoplay]").each(function() {
+                this.play()
+            })
+        } catch (t) {}
+    }),
+    function() {
+        var t = document.querySelectorAll("video[data-lowsrc]");
+        0 != t.length && Array.prototype.forEach.call(t, function(t, e) {
+            var n, o;
+            t && (n = t.getAttribute("data-lowsrc"), o = t.getAttribute("data-hisrc"), base.getWinW() < 576 && n ? t.setAttribute("data-src", n) : t.setAttribute("data-src", o))
+        })
+    }(), $(function() {
+        var t;
+        $(".timer")[0] && (t = new Date("2024-07-27T17:45:00+02:00").toLocaleString("en-US"), $(".timer").countdown(t, function(t) {
+            $("[js-timer-d]", this).text(t.strftime("%D")), $("[js-timer-h]", this).text(t.strftime("%H")), $("[js-timer-m]", this).text(t.strftime("%M")), $("[js-timer-s]", this).text(t.strftime("%S"))
+        }))
+    });
