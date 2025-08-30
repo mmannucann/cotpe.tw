@@ -1,10 +1,13 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=index.html">
-    <title>Document</title>
+const fs = require("fs");
+const path = require("path");
+const cheerio = require("cheerio");
 
+// --- Usage ---
+// node update.js
 
+const folderName = __dirname; // current folder where script is
+
+const styleBlock = `
 <style>
     .custom_div_flex {
         display: flex;
@@ -111,31 +114,38 @@ height: 150px;
 }
 }
 </style>
+`;
 
-</head>
-<body>
-    
+function processFile(filePath) {
+  let html = fs.readFileSync(filePath, "utf8");
+  const $ = cheerio.load(html, { decodeEntities: false });
 
+  // 1) comment all <style> tags
+  $("style").each((_, el) => {
+    const styleHtml = $.html(el);
+    $(el).replaceWith(`<!-- ${styleHtml} -->`);
+  });
 
-<!-- <style>
-@media (min-width: 800px) and (max-width: 1200px) {
-  .headbar {
-    height: 120px;
-    margin-top: -90px;
+  // 2) add given styleBlock before </head>
+  if ($("head").length) {
+    $("head").append("\n" + styleBlock + "\n");
   }
+
+  // 3) fix script src
+  $("script[src]").each((_, el) => {
+    const src = $(el).attr("src");
+    if (src === "js/main.min_1n.js") {
+      $(el).attr("src", "main.min_1n.js");
+    }
+  });
+
+  fs.writeFileSync(filePath, $.html(), "utf8");
+  console.log("✅ Updated:", filePath);
 }
 
-@media (min-width: 1200px) and (max-width: 1650px) {
-  .part-decl {
-    margin-left: 200px;
+// --- Run ---
+fs.readdirSync(folderName).forEach((file) => {
+  if (file.endsWith(".html")) {
+    processFile(path.join(folderName, file));
   }
-}
-
-@media (min-width: 1200px) and (max-width: 1311px) {
-  .headbar {
-    height: 120px;
-    margin-top: 220px;
-  }
-}
-</style> -->
-</body></html>
+});
